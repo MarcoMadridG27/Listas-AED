@@ -1,4 +1,11 @@
-# Integrantes: ____   _____
+# Integrantes: 
+**- Marco Antonio Madrid Gonzales**
+
+**- n**
+
+**- n**
+
+**- n**
 
 # Lists
 Implementar las tres versiones de listas enlazadas: Forward Linked List, Doubly Linked List & Circular Doubly Linked List (con centinela).
