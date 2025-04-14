@@ -1,7 +1,7 @@
 # Integrantes: 
 **- Marco Antonio Madrid Gonzales**
 
-**- n**
+**- Luis Anthony Romero Padilla**
 
 **- n**
 
