@@ -4,6 +4,7 @@
 #include "list.h"
 
 // TODO: Implement all methods
+using namespace std;
 template <typename T>
 class CircularList : public List<T> {  
     private:
@@ -12,16 +13,21 @@ class CircularList : public List<T> {
             Node* next;
             Node* prev;
 
-            Node(){ 
-                // TODO
-            }
+            Node() : data(T()), next(nullptr), prev(nullptr){}
 
-            Node(T value){
-                // TODO
+            Node(T value) : data(value), next(nullptr), prev(nullptr){
             }
 
             void killSelf(){
-                // TODO      
+                if (next != nullptr) {
+                    next->killSelf();
+                    next = nullptr;
+                }
+                if (prev != nullptr) {
+                    prev->killSelf();
+                    prev = nullptr;
+                }
+                delete this;
             }    
         };
 
@@ -30,74 +36,132 @@ class CircularList : public List<T> {
         int nodes; 
 
     public:
-        CircularList() : List<T>() { }
+        CircularList() : List<T>() , nodes(0){
+            head = new Node();  // centinela
+            head->next = head;
+            head->prev = head;
+        }
+
+
 
         ~CircularList(){
-           // TODO
+            clear();
+            delete head;
         }       
 
-         T front(){
-            throw ("sin definir");
+         T front() override {
+             if (is_empty()) throw runtime_error("Lista vacía");
+             return head->next->data;
         }
 
-        T back(){
-            throw ("sin definir");
+        T back() override {
+            if (is_empty()) throw runtime_error("Lista vacía");
+            return head->prev->data;
         }
 
-        void push_front(T data){
-            throw ("sin definir");
+        void push_front(T data) override {
+            Node* newNode = new Node(data);
+            newNode->next = head->next;
+            newNode->prev = head;
+            head->next->prev = newNode;
+            head->next = newNode;
+            nodes++;
         }
 
-        void push_back(T data){
-            throw ("sin definir");
+        void push_back(T data) override{
+            Node* newNode = new Node(data);
+            newNode->prev = head->prev;
+            newNode->next = head;
+            head->prev->next = newNode;
+            head->prev = newNode;
+            nodes++;
         }
 
-        T pop_front(){
-            throw ("sin definir");
+        T pop_front() override{
+            if (is_empty()) throw runtime_error("Lista vacía");
+            Node* temp = head->next;
+            T data = temp->data;
+            head->next = temp->next;
+            temp->next->prev = head;
+            delete temp;
+            nodes--;
+            return data;
         }
 
-        T pop_back(){
-            throw ("sin definir");
+        T pop_back() override {
+            if (is_empty()) throw runtime_error("Lista vacía");
+            Node* temp = head->prev;
+            T data = temp->data;
+            head->prev = temp->prev;
+            temp->prev->next = head;
+            delete temp;
+            nodes--;
+            return data;
         }
 
-        T insert(T data, int pos){
-            throw ("sin definir");
+        bool insert(T data, int pos){
+            if (pos < 0 || pos > nodes) throw out_of_range("fuera de rango");
+
+            Node* newNode = new Node(data);
+            Node* curr = head;
+
+            for (int i = 0; i < pos; ++i) {
+                curr = curr->next;
+            }
+
+            newNode->next = curr->next;
+            newNode->prev = curr;
+            curr->next->prev = newNode;
+            curr->next = newNode;
+            nodes++;
+            return true;
         }
 
-        bool remove(int pos){
-            throw ("sin definir");
+        bool remove(int pos) override{
+            if (pos < 0 || pos >= nodes) throw out_of_range("fuera de rango");
+
+            Node* curr = head->next;
+            for (int i = 0; i < pos; ++i) {
+                curr = curr->next;
+            }
+
+            curr->prev->next = curr->next;
+            curr->next->prev = curr->prev;
+            delete curr;
+            nodes--;
+            return true;
         }
 
-        T& operator[](int pos){
-            throw ("sin definir");
+        T& operator[](int pos)override{
+
         }
 
-        bool is_empty(){
-            throw ("sin definir");
+        bool is_empty() override {
+
         }
 
-        int size(){
-            throw ("sin definir");
+        int size() override {
+
         }
 
-        void clear(){
-            throw ("sin definir");
+        void clear() override {
+
         }
         
-        void sort(){
-            throw ("sin definir");
+        void sort() override {
+
         }
 
-        bool is_sorted(){
-            throw ("sin definir");
+        bool is_sorted()override{
+
         }
 
-        void reverse(){
-            throw ("sin definir");
+        void reverse() override {
+
         }
 
         std::string name(){
-            return "ForwardList";
+            return "CircularList";
         }
 };
 
