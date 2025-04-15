@@ -131,38 +131,73 @@ class CircularList : public List<T> {
             nodes--;
             return true;
         }
+    T& operator[](int pos)override{
+        if (pos < 0 || pos >= nodes) throw out_of_range("fuera de rango");
 
-        T& operator[](int pos)override{
-
+        Node* curr = head->next;
+        for (int i = 0; i < pos; ++i) {
+            curr = curr->next;
+        }
+        return curr->data;
         }
 
-        bool is_empty() override {
-
+    bool is_empty() override {
+            return nodes == 0;
         }
 
-        int size() override {
-
+    int size() override {
+            return nodes;
         }
 
-        void clear() override {
-
-        }
-        
-        void sort() override {
-
+    void clear() override {
+            while (!is_empty()) {
+                pop_front();
+            }
         }
 
-        bool is_sorted()override{
+    void sort() override {
+            if (nodes < 2) return;
 
+            bool swapped = true;
+            while (swapped) {
+                swapped = false;
+                Node* curr = head->next;
+
+                for (int i = 0; i < nodes - 1; ++i) {
+                    if (curr->data > curr->next->data) {
+                        std::swap(curr->data, curr->next->data);
+                        swapped = true;
+                    }
+                    curr = curr->next;
+                }
+            }
         }
 
-        void reverse() override {
+    bool is_sorted()override{
+            if (is_empty()) return true;
 
+            Node* curr = head->next;
+            while (curr->next != head) {
+                if (curr->data > curr->next->data) return false;
+                curr = curr->next;
+            }
+            return true;
         }
 
-        std::string name(){
+    void reverse() override {
+            if (nodes < 2) return;
+
+            Node* curr = head;
+            do {
+                std::swap(curr->next, curr->prev);
+                curr = curr->prev;
+            } while (curr != head);
+        }
+
+    std::string name(){
             return "CircularList";
         }
 };
+
 
 #endif

@@ -5,7 +5,7 @@
 
 **- Llorent Eloy Nunayalle Brañes**
 
-**- n**
+**- Renato Flores Pascual**
 
 # Lists
 Implementar las tres versiones de listas enlazadas: Forward Linked List, Doubly Linked List & Circular Doubly Linked List (con centinela).
